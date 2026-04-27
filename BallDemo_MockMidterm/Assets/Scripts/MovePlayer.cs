@@ -43,8 +43,19 @@ public class MovePlayer : MonoBehaviour {
         //Debug.Log(rb.position.x);
 
 		Vector3 movement = new Vector3 (moveHorizontal, 0, moveVertical);
+		Debug.Log("rb velocity: "+ movement);
+		float squareFrequency = 0;
 
-		rb.AddForce (movement*speed);
+		if (movement.x != 0.00)
+		{
+			squareFrequency = movement.x * 400;
+		}else if (movement.z != 0.00)
+		{
+            squareFrequency = movement.z * 400;
+        }
+			OSCHandler.Instance.SendMessageToClient("pd", "/unity/speed", squareFrequency);
+
+			rb.AddForce(movement * speed);
 
 		//************* Routine for receiving the OSC...
 		OSCHandler.Instance.UpdateLogs();
